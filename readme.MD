@@ -21,3 +21,4 @@ option go_package="/services"; // 指定包名 生成的go文件包名
 进入 pbfiles 文件夹 执行以下命令
 protoc --go_out=../ Prod.proto
 ```
+未完待续。。。
