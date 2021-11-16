@@ -10,3 +10,7 @@ message ProdResponse {
     int32 prod_stock = 1; //  商品库存
 }
 
+
+service ProdService{
+ rpc GetProdStock (ProdRequest) returns (ProdResponse);
+}
