@@ -10,10 +10,25 @@
 
 ### 使用以下命令为 Go 安装协议编译器插件：
 ```shell
-go get -u github.com/golang/protobuf/protoc-gen-go
-# 或者
 go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.26
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.1
+
+go get google.golang.org/grpc
+```
+
+参考地址 https://grpc.io/docs/languages/go/quickstart/
+
+编写好proto文件执行以下命令生成GO文件
+
+### 注意：
+.proto文件中要写入`option go_package="./;hello_grpc";`配置，要不然会报错。
+
+
+
+
+```shell
+# 注意要进入到pb目录中执行
+protoc --go_out=. --go_opt=paths=source_relative  --go-grpc_out=. --go-grpc_opt=paths=source_relative ./hello_grpc.proto
 ```
 
 
