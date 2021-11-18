@@ -1,0 +1,102 @@
+// 声明语法版本 告诉编译器 用proto3 来解读
+syntax = "proto3";
+
+// 这个package不是给golang用的包 而是给proto分包用的包
+package person;
+
+// option go_package="包路径(从mod下开始写);别名";
+option go_package = "demo/pb/person;person";
+
+// 定义结构
+message Person {// 名称(大写开头)
+
+    // 类型 key(下划线)=唯一(标识)
+    string name = 1;
+    int32 age = 2;
+    //    bool  sex = 3;
+
+
+    // 切片
+    repeated string test = 4; // 声明一个string类型的切片
+
+    // map 第一个参数是key 只能使用 int 或 string 第二个参数是value 类型想用啥用啥
+    map <string, string> test_map = 5; // map[string]string
+    map <string, Person> map_person = 6; // map[string]Person
+
+
+}
+// 不同语言中类型会变成什么类型参考  https://developers.google.com/protocol-buffers/docs/proto3
+
+
+// 类型嵌套
+message Home {
+    //  Home 中存在很多的 Person
+    //  []Person
+    repeated Person  persons = 1;
+
+
+    // 还可以嵌套 message
+    message ViewUser {
+        string name = 1;
+    }
+    // 定义了结构一定要使用
+    ViewUser view_user = 2;
+
+    // ViewUser test = 3; test 是保留字   Field name "test" is reserved.
+    // ViewUser view_users = 9; 9 是保留唯一标识  Field "view_users" uses reserved number
+
+    // 字段作废 【类似于保留字的概念 这个字段我以后要用到 你不能用】
+    // reserved key的名字
+    reserved "test", "admin"; // 保留key
+    reserved 9; // 保留唯一标识
+
+
+
+    // 枚举
+    // 定义枚举类型
+    enum SEX {
+        option allow_alias = true;
+
+        MAN = 0; // 男   枚举类型一定要有一个0值
+        WOMAN = 1;// 女
+        OTHER = 2; // 未知
+
+        // 有些时候 枚举出现相同的值  这时候生成文件 失败报错：
+        // "person.Home.GIRL" uses the same enum value as "person.Home.WOMAN". If this is intended, set 'option allow_alias = true;' to the enum definition.
+        // 设置  option allow_alias = true; 就可以正常生成
+        GIRL = 1; // 也是女
+    }
+    // 使用枚举类型
+    SEX sex = 3;
+
+
+
+    // 可以在message里用oneof来包裹某个段落
+    // 在这个作用区域中 所有的值只要被设置过了
+    // 其他的值就会被清空
+    // 它不可以被 repeated【不能声明成数组】
+
+    // 实际上就是声明了一个区间
+    // 区间里边声明了多个属性
+    // 但是多个属性只有一个可以有值 【只要一个有值其他的都会被清空掉】所以不可能声明成数组
+    // 具体使用方法 见main.go
+    oneof TestOneOf {
+        string one = 6;
+        string two = 7;
+        string three = 8;
+    }
+
+
+}
+
+
+// 生成文件 进入到pb目录
+// 执行 protoc --go_out=. --go_opt=paths=source_relative  --go-grpc_out=. --go-grpc_opt=paths=source_relative ./person/person.proto
+
+
+
+// 这是一行注释
+
+/*
+ 这是一段注释
+ */
