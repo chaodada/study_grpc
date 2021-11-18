@@ -33,6 +33,21 @@ protoc --go_out=. --go_opt=paths=source_relative  --go-grpc_out=. --go-grpc_opt=
 
 
 
+### protobuf语法介绍
+
+#### 声明语法版本
+```protobuf
+syntax = "proto3";
+```
+
+
+#### 给当前的proto分配包名称
+```protobuf
+package hello_grpc;
+```
+
+
+
 [comment]: <> (在 proto 文件中定义生成的go文件包名)
 
 [comment]: <> (```shell)
