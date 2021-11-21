@@ -4,8 +4,14 @@ syntax = "proto3";
 // 这个package不是给golang用的包 而是给proto分包用的包
 package person;
 
+
+// 作用 包管理 引用
 // option go_package="包路径(从mod下开始写);别名";
 option go_package = "demo/pb/person;person";
+
+// 引用其他包
+import "home/home.proto";
+
 
 // 定义结构
 message Person {// 名称(大写开头)
@@ -29,7 +35,7 @@ message Person {// 名称(大写开头)
 
 
 // 类型嵌套
-message Home {
+message Homes {
     //  Home 中存在很多的 Person
     //  []Person
     repeated Person  persons = 1;
@@ -87,7 +93,28 @@ message Home {
     }
 
 
+
+    home.Home i_home = 10;
+
+
 }
+
+
+// 定义服务
+
+service SearchService {
+
+    rpc Search(Person) returns (Person); // 传统的 即刻响应
+
+    rpc SearchIn(stream Person) returns (Person); // 入参为流的形式
+
+    rpc SearchOut(Person) returns (stream Person); // 出参为流的形式
+
+    rpc SearchIO(stream Person) returns (stream Person); // 出入均为流
+
+}
+
+
 
 
 // 生成文件 进入到pb目录

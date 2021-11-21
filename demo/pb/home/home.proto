@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package home;
+
+option go_package="demo/pb/home;home";
+
+
+message Home {
+    string  home_num = 1;
+}
