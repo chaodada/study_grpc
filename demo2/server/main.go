@@ -23,9 +23,24 @@ func (p *personServer) Search(ctx context.Context, req *person.PersonReq) (*pers
 	return res, nil
 }
 
-func (p *personServer) SearchIn(person.SearchService_SearchInServer) error {
+// SearchIn 入参为流的形式   客户端发送流  服务端接收流  并且服务端会给客户端一个流式反馈 【在停止接收的时候】
+func (p *personServer) SearchIn(server person.SearchService_SearchInServer) error {
+	// server.SendAndClose(*PersonRes) error 流式反馈
+	// server.Recv() (*PersonReq, error) 不断的读取req 过来流就读一下过来流就读一下
+
+	for {
+		req, err := server.Recv()
+		fmt.Println(req)
+		if err != nil {
+			server.SendAndClose(&person.PersonRes{Name: "服务端接收流完成"})
+			break
+		}
+
+	}
+
 	return nil
 }
+
 func (p *personServer) SearchOut(*person.PersonReq, person.SearchService_SearchOutServer) error {
 	return nil
 }
