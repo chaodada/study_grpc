@@ -35,23 +35,23 @@ func main() {
 
 	// 3、调用client的方法
 	// 入参为流的形式
-	// c, err := client.SearchIn(context.Background())
-	// if err != nil {
-	//	 fmt.Println(err.Error())
-	// }
-	// i := 0
-	// for {
-	// 	if i > 10 {
-	//	 	res, err := c.CloseAndRecv() // 强制关闭并且接收服务端传来的返回值
-	//	 	if err != nil {
-	//			fmt.Println(err.Error())
-	//		}
-	//		fmt.Println(res)
-	//		break
-	//	}
-	//	time.Sleep(1 * time.Second)                // 延迟一秒
-	//	c.Send(&person.PersonReq{Name: "我是客户端的信息"}) // 发送信息
-	//	i++
-	// }
+	c, err := client.SearchIn(context.Background())
+	if err != nil {
+		 fmt.Println(err.Error())
+	}
+	i := 0
+	for {
+		if i > 10 {
+		 	res, err := c.CloseAndRecv() // 强制关闭并且接收服务端传来的返回值
+		 	if err != nil {
+				fmt.Println(err.Error())
+			}
+			fmt.Println(res)
+			break
+		}
+		time.Sleep(1 * time.Second)                // 延迟一秒
+		c.Send(&person.PersonReq{Name: "我是客户端的信息"}) // 发送信息
+		i++
+	}
 
 }
