@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+
+package person;
+
+option go_package = "demo2/pb/person;person";
+
+
+message PersonReq {
+    string name = 1;
+    int32 age = 2;
+}
+
+
+message PersonRes {
+    string name = 1;
+    int32 age = 2;
+}
+
+
+service SearchService {
+
+    rpc Search(PersonReq) returns (PersonRes); // 传统的 即刻响应
+
+    rpc SearchIn(stream PersonReq) returns (PersonRes); // 入参为流的形式
+
+    rpc SearchOut(PersonReq) returns (stream PersonRes); // 出参为流的形式
+
+    rpc SearchIO(stream PersonReq) returns (stream PersonRes); // 出入均为流
+
+}
+
